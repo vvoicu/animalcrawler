@@ -11,7 +11,8 @@ import com.pages.wiki.DictionaryPage;
 
 public class EndUserSteps extends ScenarioSteps {
 
-    DictionaryPage dictionaryPage;
+	private static final long serialVersionUID = -4500787556605266189L;
+	DictionaryPage dictionaryPage;
 
     @Step
     public void enters(String keyword) {
