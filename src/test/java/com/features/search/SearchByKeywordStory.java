@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import com.steps.serenity.EndUserSteps;
+import com.steps.wiki.EndUserSteps;
 
 @RunWith(SerenityRunner.class)
 public class SearchByKeywordStory {
