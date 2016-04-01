@@ -8,12 +8,13 @@ import com.tools.BaseTest;
 import com.tools.Constants;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
+import net.thucydides.core.annotations.Steps;
 
 
 @RunWith(SerenityRunner.class)
 public class RamadaLoginTest extends BaseTest{
 
-	
+	@Steps
 	private HomePageSteps homePageSteps;
 	
 	
