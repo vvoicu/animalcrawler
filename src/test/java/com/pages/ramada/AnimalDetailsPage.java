@@ -123,7 +123,7 @@ public class AnimalDetailsPage extends AbstractPage {
 		// PropertiesUtils.writeToFile(Constants.FILE_NAME, "MEDICAMENTE
 		// ADMINISTRATE", "");
 		List<WebElement> listOfMedicine = administratedMedicinTable.get(0).findElements(By.cssSelector("#ListerData tr"));
-		
+
 		if (listOfMedicine.get(0).findElements(By.cssSelector("td")).size() > 1)
 			returnList.addAll(getMedicineDetails(id, listOfMedicine));
 		// System.out.println("\nMEDICAMENTE NEADMINISTRATE: ");
@@ -203,14 +203,18 @@ public class AnimalDetailsPage extends AbstractPage {
 	}
 
 	public OwnerModel getOwnerDetails(String id) {
+		element(ownerNameField).waitUntilVisible();
 		OwnerModel resultModel = new OwnerModel();
 		resultModel.id = id;
-		resultModel.name = ownerNameField.getAttribute("value");
-		String details = ownerDetails.getText();
-		details = details.replace("\n", "");
-		details = details.replace("\\n", "");
-		resultModel.details = details;
-
+		try{
+			resultModel.name = ownerNameField.getAttribute("value");
+			String details = ownerDetails.getText();
+			details = details.replace("\n", "");
+			details = details.replace("\\n", "");
+			resultModel.details = details;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return resultModel;
 	}
 

@@ -11,6 +11,9 @@ public class Constants {
 	public static final String USER_PASS = "nutebaga";
 	public static final String FILE_NAME = "test";
 	public static final String FILE_SEPARATOR = "|--|";
+	public static final long WAIT_TIME_SMALL = 1000;
+	public static final int PAGE_LOAD_MAX_RETRY = 30;
+	public static final long WAIT_TIME_LONG = 8000;
 
 
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import com.tools.AbstractPage;
 import com.tools.Constants;
 import com.tools.FileUtils;
+import com.tools.PropertiesUtils;
 import com.tools.models.AnimalDetailsModel;
 import com.tools.models.MedicineModel;
 import com.tools.models.OwnerModel;
@@ -17,59 +18,62 @@ import net.serenitybdd.core.pages.WebElementFacade;
 
 public class AnimalListPage extends AbstractPage {
 
-    private AnimalDetailsPage animalDetailsPage;
+	private AnimalDetailsPage animalDetailsPage;
 
-    @FindBy(css = "tbody#ListerData")
-    private WebElementFacade animalsTable;
-    
-    @FindBy(css = "div.header a.listerPageNext")
-    private WebElementFacade nextButton;
+	@FindBy(css = "tbody#ListerData")
+	private WebElementFacade animalsTable;
 
-    public void getAnimalDetails() {
-    	
-    	do{
-        List<WebElement> listOfAnimals = animalsTable.findElements(By.cssSelector("tr.listerRowActioned"));
+	// @FindBy(css = "div.header a.listerPageNext:not([disabled])")
+	@FindBy(css = "div.listerNavigation a.listerPageNext:not([disabled])")
+	private WebElement nextButton;
 
-//        List<AnimalDetailsModel> animalDetailsList = new ArrayList<AnimalDetailsModel>();
-//        List<MedicineModel> medicineFullList= new ArrayList<MedicineModel>();
-//        List<OwnerModel> ownerModelList = new ArrayList<OwnerModel>();
-        
-        for (int i = 0; i < listOfAnimals.size(); i++) {
-            listOfAnimals = animalsTable.findElements(By.cssSelector("tr.listerRowActioned"));
-            String idItemProp= listOfAnimals.get(i).getAttribute("data-id");
-            
-            System.out.println("---- ITEM ID: " + idItemProp);
-            listOfAnimals.get(i).click();
-            OwnerModel ownerModel = animalDetailsPage.getOwnerDetails(idItemProp);
-            AnimalDetailsModel animalDetailsModel = animalDetailsPage.getAnimalDetails(idItemProp);
-            List<MedicineModel> medicineModelList = animalDetailsPage.getAnimalAdministratedMedicine(idItemProp);
-            navigateTo(Constants.BASE_URL + "Pets");
-//            animalDetailsList.add(animalDetailsModel);
-//            ownerModelList.add(ownerModel);
-//            medicineFullList.addAll(medicineModelList);
-            
+	public void getAnimalDetails() {
 
-            FileUtils.writeToCsvFile("OwnerList", ownerModel.toStringRow());
-            FileUtils.writeToCsvFile("AnimalDetailsModel", animalDetailsModel.toStringRow());
-            FileUtils.writeMedicineModelToCsvFile("MedicineModelList", medicineModelList);
-        }
-        
-    	}while(isNextButton());
-
-//        FileUtils.writeAnimalDetailsModelToCsvFile("OwnerList", animalDetailsList);
-//        FileUtils.writeOwnerModelToCsvFile("AnimalDetailsModel", ownerModelList);
-//        FileUtils.writeMedicineModelToCsvFile("MedicineModelList", medicineFullList);
-    }
+		do {
+			waitForPageToLoad();
+			String currentHref = getDriver().getCurrentUrl();
+			PropertiesUtils.writeToFile("TestRunner", "href", currentHref);
+			List<WebElement> listOfAnimals = animalsTable.findElements(By.cssSelector("tr.listerRowActioned"));
 
 
-	private boolean isNextButton() {
+			for (int i = 0; i < listOfAnimals.size(); i++) {
+				listOfAnimals = animalsTable.findElements(By.cssSelector("tr.listerRowActioned"));
+				String idItemProp = listOfAnimals.get(i).getAttribute("data-id");
+
+				System.out.println("---- ITEM ID: " + idItemProp);
+				listOfAnimals.get(i).click();
+				OwnerModel ownerModel = animalDetailsPage.getOwnerDetails(idItemProp);
+				AnimalDetailsModel animalDetailsModel = animalDetailsPage.getAnimalDetails(idItemProp);
+				List<MedicineModel> medicineModelList = animalDetailsPage.getAnimalAdministratedMedicine(idItemProp);
+				navigateTo(currentHref);
+
+				FileUtils.writeToCsvFile("OwnerList", ownerModel.toStringRow());
+				FileUtils.writeToCsvFile("AnimalDetailsModel", animalDetailsModel.toStringRow());
+				FileUtils.writeMedicineModelToCsvFile("MedicineModelList", medicineModelList);
+			}
+
+
+
+		} while (isNextButton());
+
+	}
+
+	public void elementjQueryClick(String element) {
+		evaluateJavascript("var dd =jQuery(' " + element + " ').eq(0);dd.click(); ");
+	}
+
+	public boolean isNextButton() {
 		boolean isPresent = false;
 		element(nextButton).waitUntilVisible();
-		if(!nextButton.getAttribute("disabled").contains("disabled")){
+		System.out.println("href: " + getDriver().getCurrentUrl());
+		System.out.println("dis: " + nextButton.getAttribute("disabled"));
+
+		if (nextButton.isEnabled()) {
 			nextButton.click();
 			isPresent = true;
 		}
-		
+		waitABit(Constants.WAIT_TIME_LONG);
+		waitForPageToLoad();
 		return isPresent;
 	}
 }
