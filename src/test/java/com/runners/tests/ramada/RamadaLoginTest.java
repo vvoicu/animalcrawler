@@ -12,17 +12,17 @@ import net.thucydides.core.annotations.Steps;
 
 
 @RunWith(SerenityRunner.class)
-public class RamadaLoginTest extends BaseTest{
+public class RamadaLoginTest extends BaseTest {
 
-	@Steps
-	private HomePageSteps homePageSteps;
+    @Steps
+    private HomePageSteps homePageSteps;
 
 
-	@Test
-	public void loginToRamadaTest(){
-		homePageSteps.navigateTo(Constants.BASE_URL);
-		homePageSteps.login();
+    @Test
+    public void loginToRamadaTest() {
+        homePageSteps.navigateTo(Constants.BASE_URL);
+        homePageSteps.login();
         homePageSteps.navigateTo(Constants.BASE_URL + "Pets");
         homePageSteps.getAnimalDetails();
-	}
+    }
 }

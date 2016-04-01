@@ -30,13 +30,5 @@ public class AnimalListPage extends AbstractPage {
             navigateTo(Constants.BASE_URL + "Pets");
 
         }
-
-//        for (WebElement element : listOfAnimals) {
-//            element.click();
-//            animalDetailsPage.getAnimalDetails();
-//            animalDetailsPage.getAnimalAdministratedMedicine();
-//            animalsTable.sendKeys(Keys.BACK_SPACE);
-//            animalsTable.sendKeys(Keys.BACK_SPACE);
-//        }
     }
 }
