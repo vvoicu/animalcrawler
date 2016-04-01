@@ -12,5 +12,6 @@ public class AbstractSteps extends ScenarioSteps{
 	@Step
 	public void navigateTo(String URL){
 		abstractPage.navigateTo(URL);
+		getDriver().manage().window().maximize();
 	}
 }
